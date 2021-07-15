@@ -5,29 +5,21 @@ import axios from 'axios';
 import { Link } from '@reach/router';
 
 const ProductsList = (props) => {
-
-    const deleteProduct = (productId) => {
-        axios.delete('http://localhost:8000/api/products/' + productId)
-            .then(res => {
-                props.removeFromState(productId)
-            })
-    }
-
-    console.log(props.productsList)
+    const{productsList, deleteHandler} = props;
 
     return (
         <>
             <h3>All Products</h3>
             {
-                props.productsList[0]?
+                productsList[0]?
                 <>
                     {
-                        props.productsList.map((product, index) => {
+                        productsList.map((product, index) => {
                             return (
                                 <>
                                     <Link key={index} to={`/${product._id}`}>{product.title}</Link>
                                     <button
-                                        onClick={(e) => {deleteProduct(product._id)}}
+                                        onClick={(e) => {deleteHandler(product._id)}}
                                     >
                                         Delete Product
                                     </button>

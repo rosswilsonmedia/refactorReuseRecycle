@@ -1,47 +1,20 @@
 import React, { useState } from 'react';
 
-import axios from 'axios';
-
-const ProductForm = () => {
-    const [title, setTitle] = useState('')
-    const [price, setPrice] = useState(0)
-    const [description, setDescription] = useState('')
-
-    const titleHandler = (e) => {
-        setTitle(e.target.value)
-    }
-    const priceHandler = (e) => {
-        setPrice(e.target.value)
-    }
-    const descriptionHandler = (e) => {
-        setDescription(e.target.value)
-    }
-
-    const submitHandler = (e) => {
-        e.preventDefault();
-        axios.post('http://localhost:8000/api/products', {
-            title,
-            price,
-            description
-        })
-            .then(res=> {
-                console.log(res);
-                setTitle('');
-                setPrice(0);
-                setDescription('');
-            })
-            .catch(err=>console.log(err))
-    }
+const ProductForm = (props) => {
+    const {formSubmitHandler, initTitle, initPrice, initDescription} = props;
+    const [title, setTitle] = useState(initTitle);
+    const [price, setPrice] = useState(initPrice);
+    const [description, setDescription] = useState(initDescription);
 
     return (
-        <form onSubmit={submitHandler}>
+        <form onSubmit={formSubmitHandler}>
             <div>
                 <label htmlFor="title">Title</label>
                 <input
                     type='text'
                     name='title'
                     id='title'
-                    onChange={titleHandler}
+                    onChange={(e)=>setTitle(e.target.value)}
                     value={title}
                     required
                     aria-required='true'
@@ -54,7 +27,7 @@ const ProductForm = () => {
                     min='0'
                     name='price'
                     id='price'
-                    onChange={priceHandler}
+                    onChange={(e)=>setPrice(e.target.value)}
                     value={price}
                     required
                     aria-required='true'
@@ -66,7 +39,7 @@ const ProductForm = () => {
                     type='text'
                     name='description'
                     id='description'
-                    onChange={descriptionHandler}
+                    onChange={(e)=>setDescription(e.target.value)}
                     value={description}
                     required
                     aria-required='true'
